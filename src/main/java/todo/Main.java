@@ -2,6 +2,7 @@
 package todo;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +16,7 @@ public class Main {
         int op;
         do {
             showMenu();
+            AlarmUtils.checarAlarmes(manager); // Checa alarmes após mostrar o menu
             op = readInt("Escolha uma opção: ");
             switch (op) {
                 case 1: addTask(); break;
@@ -53,11 +55,15 @@ public class Main {
         System.out.print("Descrição: ");
         String desc = scanner.nextLine();
         LocalDate date = readDate("Data de término (AAAA-MM-DD): ");
+        LocalTime time = readTime("Horário de término (HH:mm): ");
         int priority = readInt("Prioridade (1-5): ");
         System.out.print("Categoria: ");
         String category = scanner.nextLine();
         Task.Status status = readStatus();
-        Task t = new Task(name, desc, date, priority, category, status);
+        Task t = new Task(name, desc, date, time, priority, category, status);
+        System.out.print("Ativar alarme para esta tarefa? (s/n): ");
+        String alarme = scanner.nextLine().trim().toLowerCase();
+        t.setAlarmeAtivo(alarme.equals("s") || alarme.equals("sim"));
         manager.addTask(t);
         System.out.println("Tarefa adicionada!");
     }
@@ -120,6 +126,9 @@ public class Main {
         System.out.print("Nova data de término (AAAA-MM-DD ou Enter p/ manter): ");
         String newDate = scanner.nextLine();
         if (!newDate.isEmpty()) t.setDueDate(LocalDate.parse(newDate));
+        System.out.print("Novo horário de término (HH:mm ou Enter p/ manter): ");
+        String newTime = scanner.nextLine();
+        if (!newTime.isEmpty()) t.setEndTime(LocalTime.parse(newTime));
         System.out.print("Nova prioridade (1-5 ou Enter p/ manter): ");
         String newPrio = scanner.nextLine();
         if (!newPrio.isEmpty()) t.setPriority(Integer.parseInt(newPrio));
@@ -129,6 +138,9 @@ public class Main {
         System.out.print("Novo status (TODO, DOING, DONE ou Enter p/ manter): ");
         String newStatus = scanner.nextLine();
         if (!newStatus.isEmpty()) t.setStatus(Task.Status.valueOf(newStatus.toUpperCase()));
+        System.out.print("Ativar alarme para esta tarefa? (s/n ou Enter p/ manter): ");
+        String alarme = scanner.nextLine().trim().toLowerCase();
+        if (!alarme.isEmpty()) t.setAlarmeAtivo(alarme.equals("s") || alarme.equals("sim"));
         manager.updateTask(name, t);
         System.out.println("Tarefa atualizada!");
     }
@@ -170,6 +182,18 @@ public class Main {
                 return Task.Status.valueOf(s);
             } catch (Exception e) {
                 System.out.println("Status inválido!");
+            }
+        }
+    }
+
+    private static LocalTime readTime(String msg) {
+        while (true) {
+            System.out.print(msg);
+            String input = scanner.nextLine();
+            try {
+                return LocalTime.parse(input);
+            } catch (Exception e) {
+                System.out.println("Horário inválido!");
             }
         }
     }

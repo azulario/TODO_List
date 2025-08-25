@@ -2,6 +2,7 @@ package todo;
 
 import java.io.*;
 import java.util.*;
+import java.time.LocalTime;
 
 public class TaskPersistence {
     private static final String FILE_NAME = "tasks.json";
@@ -35,8 +36,8 @@ public class TaskPersistence {
     // Serialização simples em JSON (manual)
     private static String serialize(Task t) {
         return String.format(Locale.US,
-            "{\"name\":\"%s\",\"description\":\"%s\",\"dueDate\":\"%s\",\"priority\":%d,\"category\":\"%s\",\"status\":\"%s\"}",
-            escape(t.getName()), escape(t.getDescription()), t.getDueDate(), t.getPriority(), escape(t.getCategory()), t.getStatus());
+            "{\"name\":\"%s\",\"description\":\"%s\",\"dueDate\":\"%s\",\"endTime\":\"%s\",\"priority\":%d,\"category\":\"%s\",\"status\":\"%s\",\"alarmeAtivo\":%b}",
+            escape(t.getName()), escape(t.getDescription()), t.getDueDate(), t.getEndTime(), t.getPriority(), escape(t.getCategory()), t.getStatus(), t.isAlarmeAtivo());
     }
 
     private static Task deserialize(String json) {
@@ -46,16 +47,26 @@ public class TaskPersistence {
             String[] parts = json.split(",");
             for (String part : parts) {
                 String[] kv = part.split(":", 2);
-                if (kv.length == 2) map.put(kv[0], kv[1]);
+                if (kv.length == 2) map.put(kv[0].trim(), kv[1].trim());
             }
-            return new Task(
+            LocalTime endTime = LocalTime.of(13, 0); // valor padrão
+            if (map.containsKey("endTime")) {
+                try { endTime = LocalTime.parse(map.get("endTime")); } catch(Exception ignored) {}
+            }
+            Task task = new Task(
                 map.get("name"),
                 map.get("description"),
                 java.time.LocalDate.parse(map.get("dueDate")),
+                endTime,
                 Integer.parseInt(map.get("priority")),
                 map.get("category"),
                 Task.Status.valueOf(map.get("status"))
             );
+            if (map.containsKey("alarmeAtivo")) {
+                String val = map.get("alarmeAtivo").trim().toLowerCase();
+                task.setAlarmeAtivo(val.equals("true"));
+            }
+            return task;
         } catch (Exception e) {
             return null;
         }
@@ -65,4 +76,3 @@ public class TaskPersistence {
         return s.replace("\"", "\\\"");
     }
 }
-

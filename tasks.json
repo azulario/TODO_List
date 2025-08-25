@@ -1,1 +1,4 @@
-{"name":"Tomar Café da Manhã","description":"Pão com ovo e café preto","dueDate":"2025-08-25","priority":1,"category":"Comer","status":"DONE"}
+{"name":"Tarefa Alarme 30min","description":"Teste alarme para 30 minutos","dueDate":"2025-08-25","endTime":"12:55","priority":3,"category":"Teste","status":"TODO","alarmeAtivo":true}
+{"name":"Tarefa Alarme 2h","description":"Teste alarme para 2 horas","dueDate":"2025-08-25","endTime":"14:25","priority":2,"category":"Teste","status":"TODO","alarmeAtivo":true}
+{"name":"Tarefa Sem Alarme","description":"Não deve disparar alarme","dueDate":"2025-08-25","endTime":"12:55","priority":1,"category":"Teste","status":"TODO","alarmeAtivo":false}
+{"name":"Tarefa","description":"Teste","dueDate":"2025-08-25","endTime":"13:30","priority":1,"category":"Teste alarme","status":"DOING","alarmeAtivo":true}
