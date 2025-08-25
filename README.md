@@ -1,6 +1,6 @@
 # TODO List - ZG-Hero Project (K1-T3)
 
-Desenvolvido por [Seu Nome]
+Desenvolvido por Nathalia Veiga
 
 ## Descrição
 Aplicação backend em Java para gerenciamento de tarefas (TODO List), parte do desafio ZG-Hero (K1-T3). Permite criar, remover, listar, filtrar, atualizar e persistir tarefas em arquivo JSON, com menu interativo no terminal.
