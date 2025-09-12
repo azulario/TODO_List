@@ -7,7 +7,7 @@ import java.time.LocalTime;
 public class TaskPersistence {
     private static final String FILE_NAME = "tasks.json";
 
-    public static void save(List<Task> tasks) {
+    public static void save(List<Task> tasks, String testFile) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
             for (Task t : tasks) {
                 writer.println(serialize(t));
@@ -17,7 +17,7 @@ public class TaskPersistence {
         }
     }
 
-    public static List<Task> load() {
+    public static List<Task> load(String testFile) {
         List<Task> tasks = new ArrayList<>();
         File file = new File(FILE_NAME);
         if (!file.exists()) return tasks;

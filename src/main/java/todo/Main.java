@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static final String TEST_FILE = "tasks.json";
     private static TaskManager manager = new TaskManager();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        manager.setTasks(TaskPersistence.load());
+        manager.setTasks(TaskPersistence.load(TEST_FILE));
         System.out.println("TODO List - ZG-Hero Project (K1-T3) - Desenvolvido por Nathalia Veiga");
         int op;
         do {
@@ -31,7 +32,7 @@ public class Main {
                 case 0: System.out.println("Saindo..."); break;
                 default: System.out.println("Opção inválida!");
             }
-            TaskPersistence.save(manager.getTasks());
+            TaskPersistence.save(manager.getTasks(), TEST_FILE);
         } while (op != 0);
     }
 
