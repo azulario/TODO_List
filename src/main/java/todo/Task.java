@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+// Classe Task representa uma tarefa do TO-DO List, contendo informações essenciais como nome, descrição, data e hora de término, prioridade, categoria, status e se o alarme está ativo. Implementa Serializable para permitir persistência em arquivo.
+
 public class Task implements Serializable {
     private String name;
     private String description;
@@ -15,7 +17,7 @@ public class Task implements Serializable {
     private boolean alarmeAtivo;
 
     public enum Status {
-        TODO, DOING, DONE
+        TODO, DOING, IN_PROGRESS, DONE
     }
 
     public Task(String name, String description, LocalDate dueDate, LocalTime endTime, int priority, String category, Status status) {

@@ -3,6 +3,8 @@ package todo;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+// Classe utilitária responsável por verificar e acionar alarmes das tarefas, emitindo avisos quando uma tarefa está próxima do horário de término.
+
 public class AlarmUtils {
     public static void checarAlarmes(TaskManager manager) {
         LocalDateTime agora = LocalDateTime.now();

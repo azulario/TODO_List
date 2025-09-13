@@ -4,6 +4,13 @@ import java.io.*;
 import java.util.*;
 import java.time.LocalTime;
 
+/**
+ * Classe responsável por salvar e carregar tarefas em um arquivo JSON simples.
+ * Utiliza métodos estáticos para serializar e desserializar objetos Task,
+ * armazenando cada tarefa como uma linha no arquivo `tasks.json`.
+ * A serialização e desserialização são feitas manualmente, sem uso de bibliotecas externas.
+ */
+
 public class TaskPersistence {
     private static final String FILE_NAME = "tasks.json";
 
@@ -39,6 +46,20 @@ public class TaskPersistence {
             "{\"name\":\"%s\",\"description\":\"%s\",\"dueDate\":\"%s\",\"endTime\":\"%s\",\"priority\":%d,\"category\":\"%s\",\"status\":\"%s\",\"alarmeAtivo\":%b}",
             escape(t.getName()), escape(t.getDescription()), t.getDueDate(), t.getEndTime(), t.getPriority(), escape(t.getCategory()), t.getStatus(), t.isAlarmeAtivo());
     }
+
+/**
+ * Classe responsável por persistir objetos Task num arquivo local no formato JSON (um por linha).
+ * Não utiliza bibliotecas externas para serialização/desserialização: converte manualmente os campos
+ * dos objetos Task para uma ‘string’ JSON e vice-versa.
+ *
+ * Métodos principais:
+ * - save: salva uma lista de tarefas no arquivo, sobrescrevendo o conteúdo anterior.
+ * - load: carrega todas as tarefas do arquivo, reconstruindo os objetos Task.
+ *
+ * Cada linha do arquivo representa uma tarefa serializada em JSON simples.
+ * O metodo serialize converte um Task em ‘string’ JSON.
+ * O metodo deserialize reconstrói um Task a partir da ‘string’ JSON.
+ */
 
     private static Task deserialize(String json) {
         try {

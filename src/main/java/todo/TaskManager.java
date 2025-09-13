@@ -6,6 +6,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Classe TaskManager gerencia uma lista de tarefas (Task).
+ * Permite adicionar, remover, atualizar e listar tarefas por diferentes critérios,
+ * como categoria, prioridade, status e data de vencimento.
+ * As tarefas são automaticamente reordenadas por prioridade (da maior para a menor).
+ */
+
+// Classe responsável por gerenciar a lista de tarefas, incluindo operações de CRUD, filtragem, ordenação e manipulação das tarefas em memória.
 public class TaskManager {
     private List<Task> tasks;
 
@@ -69,4 +77,3 @@ public class TaskManager {
         tasks.sort(Comparator.comparingInt(Task::getPriority).reversed());
     }
 }
-
