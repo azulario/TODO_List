@@ -14,7 +14,8 @@ public class TodoCLITest {
     
     private final ByteArrayOutputStream outputContent = new ByteArrayOutputStream();
     private PrintStream originalOut;
-    
+    private Object scanner;
+
     @BeforeEach
     void setUpStreams() {
         originalOut = System.out;
@@ -210,7 +211,7 @@ public class TodoCLITest {
 
     @Test
     void readDateTest() {
-        // Simula a entrada do usuário para ler uma data
+        // Simula a entrada do utilizador para ler uma data
         String simulatedInput = "2024-12-31"; // Data válida
         Scanner scanner = new Scanner(new ByteArrayInputStream(simulatedInput.getBytes()));
         TaskManager manager = new TaskManager();
@@ -296,34 +297,38 @@ public class TodoCLITest {
     }
 
     @Test
-    void listByDueDateTest() {
-        // Simula a entrada do usuário para listar por data de término
+    void listBydueDateTest() {
         TaskManager manager = new TaskManager();
         Task teste = new Task("Tarefa 1", "Descrição 1", LocalDate.now().plusDays(1), LocalTime.now().plusHours(1), 3, "Trabalho", Task.Status.TODO);
         Task teste2 = new Task("Tarefa 2", "Descrição 2", LocalDate.now().plusDays(2), LocalTime.now().plusHours(2), 2, "Pessoal", Task.Status.IN_PROGRESS);
         manager.addTask(teste);
         manager.addTask(teste2);
 
-        Scanner scanner = new Scanner(System.in); // Scanner não será usado neste teste
+        String simulatedInput = LocalDate.now().plusDays(1).toString();
+        Scanner scanner = new Scanner(new ByteArrayInputStream(simulatedInput.getBytes()));
         TodoCLI cli = new TodoCLI(manager, scanner, "test_tasks.json");
 
-        // Executa apenas o metodo listByDueDate diretamente
         cli.listByDueDate();
 
-        // Verifica se a saída contém as tarefas na ordem correta
         String output = outputContent.toString();
-        int index1 = output.indexOf("Tarefa 1");
-        int index2 = output.indexOf("Tarefa 2");
-        Assertions.assertTrue(index1 < index2); // Tarefa 1 deve aparecer antes de Tarefa 2
-
-
+        Assertions.assertTrue(output.contains("Tarefa 1"));
+        Assertions.assertFalse(output.contains("Tarefa 2"));
     }
 
     @Test
     void readStatusTest() {
+        // Simula a entrada do usuário para ler um status
+        String simulatedInput = "DONE"; // Status válido
+        Scanner scanner = new Scanner(new ByteArrayInputStream(simulatedInput.getBytes()));
+        TaskManager manager = new TaskManager();
+        TodoCLI cli = new TodoCLI(manager, scanner, "test_tasks.json");
+
+        // Chama o metodo readStatus diretamente
+        Task.Status status = cli.readStatus();
+
+        // Verifica se o status foi lido corretamente
+        Assertions.assertEquals(Task.Status.DONE, status);
 
     }
-
-
 
 }
