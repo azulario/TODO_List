@@ -16,6 +16,13 @@ public class TaskPersistenceTest {
         new File(TEST_FILE).delete();
     }
 
+    @AfterEach
+    public void cleanup() {
+        // Remove o arquivo de teste após cada teste
+        new File(TEST_FILE).delete();
+    }
+
+    // Testa salvar e carregar tarefas
     @Test
     void testSaveAndLoadTasks() {
         // Cria tarefa de teste
@@ -41,10 +48,11 @@ public class TaskPersistenceTest {
         Assertions.assertEquals(task.isAlarmeAtivo(), loadedTask.isAlarmeAtivo());
     }
 
-    @AfterEach
-    public void cleanup() {
-        // Remove o arquivo de teste após cada teste
-        new File(TEST_FILE).delete();
-    }
-
+    // (Teste de save() - salvar lista de tarefas e verificar se o arquivo foi criado corretamente já está coberto)
+    // (Teste de load() - carregar lista de tarefas de um arquivo existente e verificar se os dados batem já está coberto)
+    // TODO: Fazer teste de load() com arquivo inexistente - deve retornar lista vazia
+    // TODO: Fazer teste de save() com lista vazia - deve criar arquivo vazio ou com estrutura correta
+    // TODO: Fazer teste de load() com arquivo corrompido ou inválido - deve tratar exceção e retornar lista vazia
+    // TODO: Fazer teste de save() com tarefas contendo campos nulos ou inválidos - deve tratar corretamente
+    // TODO: Fazer teste de load() com múltiplas tarefas - verificar se todas são carregadas corretamente
 }

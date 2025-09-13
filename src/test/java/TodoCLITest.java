@@ -331,4 +331,10 @@ public class TodoCLITest {
 
     }
 
+    // TODO: Fazer teste de addTask() com dados inválidos (ex: prioridade fora do intervalo)
+    // TODO: Fazer teste de addTask() com campos obrigatórios vazios
+    // (Teste de removeTask() com tarefa inexistente já está coberto)
+    // (Teste de listTasks() com lista vazia já está coberto)
+    // (Teste de listTasks() com múltiplas tarefas e diferentes status já está coberto)
+    // (Teste de atualização de tarefa (updateTask) já está coberto)
 }

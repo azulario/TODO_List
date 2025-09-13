@@ -20,4 +20,10 @@ class TaskManagerTest {
         assertEquals(0, manager.getTasks().size());
     }
 
+    // TODO: Fazer teste de addTask() com prioridade máxima e mínima
+    // TODO: Fazer teste de addTask() com nome duplicado - deve permitir ou não?
+    // TODO: Fazer teste de removeTask() com nome inexistente - deve retornar false
+    // TODO: Fazer teste de getTasks() com lista vazia
+    // TODO: Fazer teste de getTasks() após múltiplas adições e remoções
+
 }

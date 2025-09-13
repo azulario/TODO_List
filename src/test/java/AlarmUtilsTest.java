@@ -53,4 +53,9 @@ public class AlarmUtilsTest {
         assertFalse(output.contains("ALERTA"));
     }
 
+    // TODO: Fazer teste de checarAlarmes() com tarefa sem alarme ativo - não deve exibir alerta
+    // TODO: Fazer teste de checarAlarmes() com lista vazia - não deve exibir alerta
+    // TODO: Fazer teste de checarAlarmes() com múltiplas tarefas, apenas algumas com alarme ativo e dentro do intervalo
+    // TODO: Fazer teste de checarAlarmes() com tarefa já vencida - não deve exibir alerta
+
 }

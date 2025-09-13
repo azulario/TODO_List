@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
-// Classe responsável pela interface de linha de comando do TO-DO List, gerenciando toda a interação com o usuário via terminal (menu, entrada de dados, exibição de tarefas, etc).
+// Classe responsável pela ‘interface’ de linha de comando do TO-DO List, gerenciando toda a interação com o usuário via terminal (menu, entrada de dados, exibição de tarefas, etc).
 
 public class TodoCLI {
     private final TaskManager manager;
@@ -158,6 +158,7 @@ public class TodoCLI {
         else tasks.forEach(System.out::println);
     }
 
+    // Métodos auxiliares para leitura de dados com validação
     public int readInt(String msg) {
         while (true) {
             System.out.print(msg);
