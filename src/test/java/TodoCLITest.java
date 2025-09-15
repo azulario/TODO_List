@@ -11,11 +11,12 @@ import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TodoCLITest {
-    
+
     private final ByteArrayOutputStream outputContent = new ByteArrayOutputStream();
     private PrintStream originalOut;
     private Object scanner;
 
+    // Redireciona a saída padrão para capturar o output do sistema
     @BeforeEach
     void setUpStreams() {
         originalOut = System.out;
@@ -26,7 +27,7 @@ public class TodoCLITest {
     void restoreStreams() {
         System.setOut(originalOut);
     }
-    
+
     @Test
     void testAddTask() {
 
@@ -41,6 +42,7 @@ public class TodoCLITest {
                 "TODO", // Status
                 "s" // Ativar alarme
         );
+
         Scanner scanner = new Scanner(new ByteArrayInputStream(simulatedInput.getBytes()));
         TaskManager manager = new TaskManager();
         TodoCLI cli = new TodoCLI(manager, scanner, "test_tasks.json");
@@ -50,13 +52,13 @@ public class TodoCLITest {
         
         // Verifica se a tarefa foi adicionada corretamente
         Assertions.assertEquals(1, manager.getTasks().size());
-        Task t = manager.getTasks().get(0);
-        Assertions.assertEquals("Tarefa Teste", t.getName());
-        Assertions.assertEquals("Descrição da tarefa", t.getDescription());
-        Assertions.assertEquals(3, t.getPriority());
-        Assertions.assertEquals("Trabalho", t.getCategory());
-        Assertions.assertEquals(Task.Status.TODO, t.getStatus());
-        assertTrue(t.isAlarmeAtivo());
+        Task task = manager.getTasks().get(0);
+        Assertions.assertEquals("Tarefa Teste", task.getName());
+        Assertions.assertEquals("Descrição da tarefa", task.getDescription());
+        Assertions.assertEquals(3, task.getPriority());
+        Assertions.assertEquals("Trabalho", task.getCategory());
+        Assertions.assertEquals(Task.Status.TODO, task.getStatus());
+        assertTrue(task.isAlarmeAtivo());
         
         // Verifica se a saída contém a mensagem de sucesso
         assertTrue(outputContent.toString().contains("Tarefa adicionada!"));

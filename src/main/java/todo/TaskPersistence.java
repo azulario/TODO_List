@@ -1,50 +1,58 @@
 package todo;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 import java.time.LocalTime;
 
 /**
  * Classe responsável por salvar e carregar tarefas em um arquivo JSON simples.
  * Utiliza métodos estáticos para serializar e desserializar objetos Task,
- * armazenando cada tarefa como uma linha no arquivo `tasks.json`.
+ * armazenando cada tarefa como uma linha no arquivo 'tasks.json`.
  * A serialização e desserialização são feitas manualmente, sem uso de bibliotecas externas.
  */
 
 public class TaskPersistence {
-    private static final String FILE_NAME = "tasks.json";
 
-    public static void save(List<Task> tasks, String testFile) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
-            for (Task t : tasks) {
-                writer.println(serialize(t));
+    public static void save(List<Task> tasks, String fileName) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            for (Task task : tasks) {
+                writer.println(serialize(task));
             }
-        } catch (IOException e) {
-            System.out.println("Erro ao salvar tarefas: " + e.getMessage());
+        } catch (IOException error) {
+            System.out.println("Erro ao salvar tarefas: " + error.getMessage());
         }
     }
 
-    public static List<Task> load(String testFile) {
+    public static List<Task> load(String fileName) {
         List<Task> tasks = new ArrayList<>();
-        File file = new File(FILE_NAME);
-        if (!file.exists()) return tasks;
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+        File file = new File(fileName);
+        if (!file.exists())  return tasks;
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                Task t = deserialize(line);
-                if (t != null) tasks.add(t);
+            while ((line = reader.readLine()) !=null) {
+                Task task = deserialize(line);
+                if (task != null) tasks.add(task);
             }
-        } catch (IOException e) {
-            System.out.println("Erro ao carregar tarefas: " + e.getMessage());
+        } catch (IOException error) {
+            System.out.println("Erro ao carregar tarefas: " + error.getMessage());
         }
         return tasks;
     }
 
     // Serialização simples em JSON (manual)
-    private static String serialize(Task t) {
+    private static String serialize(Task task) {// Serializa cada campo, convertendo null para string vazia
         return String.format(Locale.US,
             "{\"name\":\"%s\",\"description\":\"%s\",\"dueDate\":\"%s\",\"endTime\":\"%s\",\"priority\":%d,\"category\":\"%s\",\"status\":\"%s\",\"alarmeAtivo\":%b}",
-            escape(t.getName()), escape(t.getDescription()), t.getDueDate(), t.getEndTime(), t.getPriority(), escape(t.getCategory()), t.getStatus(), t.isAlarmeAtivo());
+            escape(task.getName()),
+            escape(task.getDescription()),
+            task.getDueDate() == null ? "" : task.getDueDate().toString(),
+            task.getEndTime() == null ? "" : task.getEndTime().toString(),
+            task.getPriority(),
+            escape(task.getCategory()),
+            task.getStatus() == null ? "" : task.getStatus().name(),
+            task.isAlarmeAtivo()
+        );
     }
 
 /**
@@ -64,36 +72,57 @@ public class TaskPersistence {
     private static Task deserialize(String json) {
         try {
             Map<String, String> map = new HashMap<>();
-            json = json.trim().replaceAll("[{}\"]", "");
+            json = json.trim().replaceAll("\"", "");
             String[] parts = json.split(",");
             for (String part : parts) {
-                String[] kv = part.split(":", 2);
-                if (kv.length == 2) map.put(kv[0].trim(), kv[1].trim());
+                String[] keyValue = part.split(":", 2);
+                if (keyValue.length == 2) map.put(keyValue[0], keyValue[1]);
             }
-            LocalTime endTime = LocalTime.of(13, 0); // valor padrão
-            if (map.containsKey("endTime")) {
-                try { endTime = LocalTime.parse(map.get("endTime")); } catch(Exception ignored) {}
-            }
+
+            String name = map.get("name");
+            if (name != null && name.isEmpty()) name = null;
+
+            String category = map.get("category");
+            if (category != null && category.isEmpty()) category = null;
+
+            String endTimeStr = map.get("endTime");
+            LocalTime endTime = (endTimeStr == null || endTimeStr.isEmpty()) ? null : LocalTime.parse(endTimeStr);
+
+            String priorityStr = map.get("priority");
+            int priority = (priorityStr == null || priorityStr.isEmpty()) ? 0 : Integer.parseInt(priorityStr);
+
+            String dueDateStr = map.get("dueDate");
+            LocalDate dueDate = (dueDateStr == null || dueDateStr.isEmpty()) ? null : LocalDate.parse(dueDateStr);
+
+            String description = map.get("description");
+            if (description != null && description.isEmpty()) description = null;
+
+
+            Task.Status status = (map.get("status") == null || map.get("status").isEmpty()) ? null : Task.Status.valueOf(map.get("status"));
+
             Task task = new Task(
-                map.get("name"),
-                map.get("description"),
-                java.time.LocalDate.parse(map.get("dueDate")),
-                endTime,
-                Integer.parseInt(map.get("priority")),
-                map.get("category"),
-                Task.Status.valueOf(map.get("status"))
+                    name,
+                    description,
+                    dueDate,
+                    endTime,
+                    priority,
+                    category,
+                    status
             );
+
             if (map.containsKey("alarmeAtivo")) {
                 String val = map.get("alarmeAtivo").trim().toLowerCase();
                 task.setAlarmeAtivo(val.equals("true"));
             }
             return task;
+
         } catch (Exception e) {
-            return null;
+           return null;
         }
     }
 
-    private static String escape(String s) {
-        return s.replace("\"", "\\\"");
+    private static String escape(String string) {
+        if (string == null) return "";
+        return string.replace("\"", "\\\"");
     }
 }

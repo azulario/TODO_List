@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 class TaskManagerTest {
     /**
-     * Testa se o método addTask adiciona uma tarefa corretamente e se removeTask remove a tarefa pelo nome.
+     * Testa se o metodo addTask adiciona uma tarefa corretamente e se removeTask remove a tarefa pelo nome.
      * Verifica se o número de tarefas é atualizado após cada operação.
      */
     @Test
