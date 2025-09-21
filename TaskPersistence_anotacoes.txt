@@ -1,0 +1,34 @@
+# Anotações sobre TaskPersistence.java
+
+## O que foi feito
+- Corrigido o método `serialize` para garantir que todos os campos nulos sejam convertidos para string vazia, evitando problemas de serialização e compatibilidade com a desserialização.
+- Garantido que a desserialização (`deserialize`) converta strings vazias de volta para `null` para todos os campos relevantes.
+- Testes executados para validar o funcionamento correto da serialização e desserialização, especialmente para tarefas com campos nulos.
+
+## O que cada função faz
+
+### save(List<Task> tasks, String fileName)
+Salva uma lista de tarefas no arquivo especificado. Cada tarefa é serializada em uma linha no formato JSON simples (manual). Sobrescreve o conteúdo anterior do arquivo.
+
+### load(String fileName)
+Carrega todas as tarefas do arquivo especificado, desserializando cada linha em um objeto Task. Retorna uma lista de tarefas. Se o arquivo não existir, retorna uma lista vazia.
+
+### serialize(Task task)
+Converte um objeto Task em uma string JSON simples. Todos os campos nulos são convertidos para string vazia. Usado internamente pelo método save.
+
+### deserialize(String json)
+Reconstrói um objeto Task a partir de uma string JSON simples. Strings vazias são convertidas de volta para null. Usado internamente pelo método load.
+
+### escape(String string)
+Escapa aspas duplas em strings para evitar problemas na serialização manual. Se o valor for null, retorna string vazia.
+
+## Observações
+- O código não usa bibliotecas externas para serialização/desserialização JSON, tudo é feito manualmente.
+- O método serialize garante compatibilidade com a desserialização, evitando NullPointerException.
+- O método load só adiciona tarefas válidas (não nulas) à lista retornada.
+- O método escape é importante para evitar problemas com aspas em campos de texto.
+
+## Próximos passos
+- Caso surjam novos campos em Task, é necessário atualizar serialize e deserialize.
+- Para maior robustez, recomenda-se futuramente o uso de uma biblioteca JSON (como Gson ou Jackson).
+

@@ -1,0 +1,24 @@
+# Melhorias e correções sugeridas para TaskPersistence.java
+
+## 1. Uso de Generics
+- Trocar `List<Task> tasks = new ArrayList<>();` por `List<Task> tasks = new ArrayList<Task>();` para evitar warnings de uso cru de generics (ou garantir que o diamond operator está correto para a versão do Java usada).
+
+## 2. Comentários Javadoc soltos
+- Remover ou ajustar comentários Javadoc que estão fora de métodos ou classes, pois geram avisos de compilação.
+
+## 3. Corpo do if
+- Melhorar a clareza do if `if (!file.exists())  return tasks;` colocando o return em uma nova linha.
+
+## 4. Métodos utilitários
+- Os métodos `serialize`, `deserialize` e `escape` são usados internamente e estão corretos. Os avisos de métodos privados não usados podem ser ignorados ou suprimidos com `@SuppressWarnings("unused")` se desejado.
+
+## 5. Resumo do que foi feito
+- O método `deserialize` está correto e trata campos nulos e strings vazias adequadamente.
+- O método `serialize` já converte campos nulos para string vazia, garantindo compatibilidade.
+- O método `load` só adiciona tarefas válidas à lista.
+
+## 6. Observação
+- Não há erros críticos, apenas avisos de compilação (warnings) que não impedem o funcionamento do código.
+- O código está funcional e robusto para o propósito atual.
+
+Se desejar, posso aplicar essas melhorias diretamente no código.
