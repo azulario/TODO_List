@@ -1,3 +1,4 @@
+@use "sass:color";
 @import url('https://fonts.googleapis.com/css2?family=Vercel:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&family=Inter:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
@@ -12,6 +13,20 @@ $dark: #343a40;
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+// utilitário de acessibilidade para esconder visualmente sem remover do DOM
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
 }
 
 body {
@@ -44,6 +59,11 @@ h1 {
   }
 }
 
+// Material Symbols base em negrito
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+}
+
 // Tema escuro
 @media (prefers-color-scheme: dark) {
   body, .task-info span, .task-info small {
@@ -56,9 +76,7 @@ h1 {
     background: #181a1b !important;
     color: #f5f6fa;
   }
-  h1 {
-    color: #f5f6fa;
-  }
+  h1 { color: #f5f6fa; }
   .container {
     background: #23272a !important;
     box-shadow: 0 8px 32px 0 rgba(0,0,0,0.25), 0 1.5px 4px 0 rgba(0,0,0,0.12);
@@ -88,32 +106,21 @@ h1 {
     input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(1) brightness(2);
     }
-    input[type="date"] {
-      color-scheme: dark;
-    }
+    input[type="date"] { color-scheme: dark; }
   }
-  .column-label {
-    color: #f5f6fa !important;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
+  .column-label { color: #f5f6fa !important; text-transform: uppercase; transition: color 0.2s; }
   .columns > .column:nth-child(2) .column-label,
-  .columns > .column:nth-child(3) .column-label {
-    color: #f5f6fa !important;
-  }
-  .column-icon {
-    color: #b5aaff;
-  }
-  .task-actions button {
-    color: #b5aaff;
-  }
+  .columns > .column:nth-child(3) .column-label { color: #f5f6fa !important; }
+  .column-icon { color: color.adjust($primary, $lightness: 10%); }
+  .task-actions button { color: color.adjust($primary, $lightness: 10%); }
+  // Botões primários com cor sólida
   form button, button, input[type="button"], input[type="submit"] {
-    background: linear-gradient(90deg, #6c5ce7 60%, #8875FF 100%);
+    background: $primary;
     color: #fff;
     box-shadow: 0 2px 8px 0 rgba(136,117,255,0.18);
   }
   form button:hover, button:hover, input[type="button"]:hover, input[type="submit"]:hover {
-    background: linear-gradient(90deg, #8875FF 60%, #6c5ce7 100%);
+    background: #6c5ce7;
     box-shadow: 0 4px 16px 0 rgba(136,117,255,0.22);
   }
 }
@@ -126,7 +133,6 @@ h1 {
   box-shadow: 0 8px 32px 0 rgba(60,60,60,0.10), 0 1.5px 4px 0 rgba(60,60,60,0.06);
   padding: 2.5rem 2rem 2rem 2rem;
 }
-
 
 form {
   display: flex;
@@ -149,8 +155,9 @@ form {
     margin-bottom: 0.5rem;
   }
 
+  // Botão primário sólido com $primary
   button, input[type="button"], input[type="submit"] {
-    background: linear-gradient(90deg, #8875FF 60%, #6c5ce7 100%);
+    background: $primary;
     color: white;
     border: none;
     appearance: none;
@@ -167,7 +174,7 @@ form {
     text-align: center;
   }
   button:hover, input[type="button"]:hover, input[type="submit"]:hover {
-    background: linear-gradient(90deg, #6c5ce7 60%, #8875FF 100%);
+    background: #6c5ce7;
     box-shadow: 0 4px 16px 0 rgba(136,117,255,0.12);
   }
 }
@@ -184,10 +191,10 @@ form {
   display: flex;
   flex-direction: row;
   gap: 2.5rem;
-  justify-content: space-between;
+  justify-content: flex-start; // evita esticar com space-between, usa apenas gap
   margin-top: 2rem;
   width: 100%;
-  align-items: flex-start;
+  align-items: stretch; // colunas alinhadas horizontalmente por altura
   @media (max-width: 900px) {
     flex-direction: column;
     gap: 1.2rem;
@@ -222,7 +229,7 @@ form {
   gap: 0.7rem;
   margin-bottom: 1.2rem;
   font-size: 2.3rem;
-  color: #8875FF;
+  color: $primary;
   font-weight: bold;
   opacity: 0.85;
   transition: color 0.2s, opacity 0.2s;
@@ -236,16 +243,12 @@ form {
   letter-spacing: 0.01em;
   opacity: 0.95;
   margin-top: 0.1rem;
-  text-transform: uppercase;
+
   transition: color 0.2s;
 }
 
-.columns > .column:nth-child(2) .column-label {
-  color: #222;
-}
-.columns > .column:nth-child(3) .column-label {
-  color: #222;
-}
+.columns > .column:nth-child(2) .column-label { color: #222; }
+.columns > .column:nth-child(3) .column-label { color: #222; }
 
 .task-list {
   list-style: none;
@@ -268,9 +271,7 @@ li.TODO, li.DOING, li.DONE {
   gap: 1.2rem;
   transition: box-shadow 0.18s;
   border-left: 5px solid #007aff;
-  &:hover {
-    box-shadow: 0 6px 24px 0 rgba(0,122,255,0.13);
-  }
+  &:hover { box-shadow: 0 6px 24px 0 rgba(0,122,255,0.13); }
   @media (max-width: 900px) {
     flex-direction: column;
     gap: 0.7rem;
@@ -278,8 +279,8 @@ li.TODO, li.DOING, li.DONE {
     margin-bottom: 0.8rem;
   }
 }
-li.DOING { border-left: 5px solid #28a745; }
-li.DONE { border-left: 5px solid #dc3545; }
+li.DOING { border-left: 5px solid $success; }
+li.DONE { border-left: 5px solid $danger; }
 
 .task-info {
   flex: 1 1 0;
@@ -294,42 +295,19 @@ li.DONE { border-left: 5px solid #dc3545; }
     margin-bottom: 0.1rem;
     font-family: 'SF Pro Display', 'Inter', Arial, sans-serif;
   }
-  span {
-    color: #555;
-    font-size: 1.01rem;
-    margin-bottom: 0.1rem;
-  }
-  small {
-    color: #888;
-    font-size: 0.97rem;
-    margin-bottom: 0.1rem;
-  }
+  span { color: #555; font-size: 1.01rem; margin-bottom: 0.1rem; }
+  small { color: #888; font-size: 0.97rem; margin-bottom: 0.1rem; }
   .status-select {
     margin-top: 0.2rem;
     select {
-      border-radius: 6px;
-      border: 1px solid #e0e0e0;
-      padding: 0.3rem 0.7rem;
-      font-size: 0.98rem;
-      background: #f7f8fa;
-      font-family: inherit;
-      margin-left: 0.3rem;
+      border-radius: 6px; border: 1px solid #e0e0e0; padding: 0.3rem 0.7rem; font-size: 0.98rem; background: #f7f8fa; font-family: inherit; margin-left: 0.3rem;
     }
-    label {
-      color: #666;
-      font-size: 0.97rem;
-      margin-right: 0.2rem;
-    }
+    label { color: #666; font-size: 0.97rem; margin-right: 0.2rem; }
   }
   @media (max-width: 900px) {
-    font-size: 0.98rem;
-    gap: 0.3rem;
-    strong {
-      font-size: 1.05rem;
-    }
-    span, small {
-      font-size: 0.95rem;
-    }
+    font-size: 0.98rem; gap: 0.3rem;
+    strong { font-size: 1.05rem; }
+    span, small { font-size: 0.95rem; }
   }
 }
 
@@ -339,25 +317,26 @@ li.DONE { border-left: 5px solid #dc3545; }
   gap: 0.7rem;
   button {
     background: none;
-    border: none;
+    border: 1px solid transparent;
     cursor: pointer;
     font-size: 1.25rem;
-    color: #8875FF;
-    font-weight: bold;
-    transition: color 0.18s;
+    color: $primary;
+    font-weight: 700;
+    transition: color 0.18s, border-color 0.18s, background 0.18s;
+    width: 36px; height: 36px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 8px;
     &:hover {
       color: #6c5ce7;
+      background: rgba(136,117,255,0.08);
+      border-color: rgba(136,117,255,0.3);
     }
     &.delete {
-      color: #dc3545;
-      &:hover { color: #a71d2a; }
+      color: $danger;
+      &:hover { color: color.adjust($danger, $lightness: -18%); background: rgba(220,53,69,0.08); border-color: rgba(220,53,69,0.3); }
     }
   }
-  @media (max-width: 900px) {
-    flex-direction: row;
-    gap: 1.2rem;
-    justify-content: flex-end;
-  }
+  @media (max-width: 900px) { flex-direction: row; gap: 1.2rem; justify-content: flex-end; }
 }
 
 .logo {
@@ -371,19 +350,11 @@ li.DONE { border-left: 5px solid #dc3545; }
 }
 
 @media (max-width: 600px) {
-  .logo {
-    min-width: 120px;
-    max-width: 80vw;
-    margin-bottom: 1rem;
-  }
+  .logo { min-width: 120px; max-width: 80vw; margin-bottom: 1rem; }
 }
 
 @media (max-width: 425px) {
-  .logo {
-    min-width: 90px;
-    max-width: 95vw;
-    margin-bottom: 0.7rem;
-  }
+  .logo { min-width: 90px; max-width: 95vw; margin-bottom: 0.7rem; }
 }
 
 @media (max-width: 900px) {
@@ -420,77 +391,27 @@ li.DONE { border-left: 5px solid #dc3545; }
     padding: 0.8rem 0.7rem 0.8rem 0.7rem;
     margin-bottom: 0.8rem;
   }
-  .task-actions {
-    flex-direction: row;
-    gap: 1.2rem;
-    justify-content: flex-end;
-  }
+  .task-actions { flex-direction: row; gap: 1.2rem; justify-content: flex-end; }
   .task-info {
-    font-size: 0.98rem;
-    gap: 0.3rem;
-    strong {
-      font-size: 1.05rem;
-    }
-    span, small {
-      font-size: 0.95rem;
-    }
+    font-size: 0.98rem; gap: 0.3rem;
+    strong { font-size: 1.05rem; }
+    span, small { font-size: 0.95rem; }
   }
 }
 
 @media (max-width: 600px) {
-  h1 {
-    font-size: 1.3rem;
-    margin-bottom: 1.2rem;
-  }
-  .container {
-    padding: 0.5rem 0 0.5rem 0;
-  }
-  .column {
-    padding: 0.5rem 0.1rem;
-  }
-  form {
-    padding: 0.5rem 0.1rem 0.5rem 0.1rem;
-    gap: 0.3rem;
-  }
-  li.TODO, li.DOING, li.DONE {
-    padding: 0.6rem 0.3rem 0.6rem 0.3rem;
-    margin-bottom: 0.5rem;
-  }
-  .task-actions {
-    gap: 0.5rem;
-  }
+  h1 { font-size: 1.3rem; margin-bottom: 1.2rem; }
+  .container { padding: 0.5rem 0 0.5rem 0; }
+  .column { padding: 0.5rem 0.1rem; }
+  form { padding: 0.5rem 0.1rem 0.5rem 0.1rem; gap: 0.3rem; }
+  li.TODO, li.DOING, li.DONE { padding: 0.6rem 0.3rem 0.6rem 0.3rem; margin-bottom: 0.5rem; }
+  .task-actions { gap: 0.5rem; }
 }
 
 @media (max-width: 425px) {
-  .columns {
-    flex-direction: column;
-    gap: 0.7rem;
-    margin-top: 0.5rem;
-    width: 100%;
-  }
-  .column {
-    max-width: 100% !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    padding: 0.4rem 0.05rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px 0 rgba(60,60,60,0.06);
-  }
-  li.TODO, li.DOING, li.DONE {
-    padding: 0.5rem 0.1rem 0.5rem 0.1rem;
-    margin-bottom: 0.3rem;
-  }
-  .task-info {
-    font-size: 0.93rem;
-    gap: 0.2rem;
-    strong {
-      font-size: 1rem;
-    }
-    span, small {
-      font-size: 0.91rem;
-    }
-  }
-  .task-actions {
-    gap: 0.3rem;
-  }
+  .columns { flex-direction: column; gap: 0.7rem; margin-top: 0.5rem; width: 100%; }
+  .column { max-width: 100% !important; min-width: 0 !important; width: 100% !important; padding: 0.4rem 0.05rem; border-radius: 8px; box-shadow: 0 1px 4px 0 rgba(60,60,60,0.06); }
+  li.TODO, li.DOING, li.DONE { padding: 0.5rem 0.1rem 0.5rem 0.1rem; margin-bottom: 0.3rem; }
+  .task-info { font-size: 0.93rem; gap: 0.2rem; strong { font-size: 1rem; } span, small { font-size: 0.91rem; } }
+  .task-actions { gap: 0.3rem; }
 }

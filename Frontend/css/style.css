@@ -7,6 +7,19 @@
   box-sizing: border-box;
 }
 
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
 body {
   background: #f5f6fa;
   font-family: "SF Pro Display", "Inter", Arial, sans-serif;
@@ -35,9 +48,8 @@ h1 {
     font-size: 1.4rem;
   }
 }
-/* Regras base para Material Symbols - deixa os ícones em negrito */
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 24;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -96,18 +108,18 @@ h1 {
     color: #f5f6fa !important;
   }
   .column-icon {
-    color: #b5aaff;
+    color: rgb(179.9782608696, 168, 255);
   }
   .task-actions button {
-    color: #b5aaff;
+    color: rgb(179.9782608696, 168, 255);
   }
   form button, button, input[type=button], input[type=submit] {
-    background: linear-gradient(90deg, #6c5ce7 60%, #8875FF 100%);
+    background: #8875FF;
     color: #fff;
     box-shadow: 0 2px 8px 0 rgba(136, 117, 255, 0.18);
   }
   form button:hover, button:hover, input[type=button]:hover, input[type=submit]:hover {
-    background: linear-gradient(90deg, #8875FF 60%, #6c5ce7 100%);
+    background: #6c5ce7;
     box-shadow: 0 4px 16px 0 rgba(136, 117, 255, 0.22);
   }
 }
@@ -141,7 +153,7 @@ form input, form select {
   margin-bottom: 0.5rem;
 }
 form button, form input[type=button], form input[type=submit] {
-  background: linear-gradient(90deg, #8875FF 60%, #6c5ce7 100%);
+  background: #8875FF;
   color: white;
   border: none;
   appearance: none;
@@ -158,7 +170,7 @@ form button, form input[type=button], form input[type=submit] {
   text-align: center;
 }
 form button:hover, form input[type=button]:hover, form input[type=submit]:hover {
-  background: linear-gradient(90deg, #6c5ce7 60%, #8875FF 100%);
+  background: #6c5ce7;
   box-shadow: 0 4px 16px 0 rgba(136, 117, 255, 0.12);
 }
 
@@ -174,10 +186,10 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
   display: flex;
   flex-direction: row;
   gap: 2.5rem;
-  justify-content: flex-start; /* evita esticar com space-between, usa apenas gap */
+  justify-content: flex-start;
   margin-top: 2rem;
   width: 100%;
-  align-items: stretch; /* colunas alinhadas na horizontal por altura */
+  align-items: stretch;
 }
 @media (max-width: 900px) {
   .columns {
@@ -230,7 +242,6 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
   letter-spacing: 0.01em;
   opacity: 0.95;
   margin-top: 0.1rem;
-  text-transform: uppercase;
   transition: color 0.2s;
 }
 
@@ -353,12 +364,12 @@ li.DONE {
   color: #8875FF;
   font-weight: 700;
   transition: color 0.18s, border-color 0.18s, background 0.18s;
-  width: 36px; height: 36px;
-  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
-}
-.task-actions .material-symbols-outlined {
-  font-size: 22px; line-height: 1;
 }
 .task-actions button:hover {
   color: #6c5ce7;
@@ -369,7 +380,7 @@ li.DONE {
   color: #dc3545;
 }
 .task-actions button.delete:hover {
-  color: #a71d2a;
+  color: rgb(154.4405063291, 26.7594936709, 38.9924050633);
   background: rgba(220, 53, 69, 0.08);
   border-color: rgba(220, 53, 69, 0.3);
 }
@@ -511,3 +522,5 @@ li.DONE {
     gap: 0.3rem;
   }
 }
+
+/*# sourceMappingURL=style.css.map */

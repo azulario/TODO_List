@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- Google Material Icons (para ícones clássicos) -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Google Material Symbols Outlined (carrega também edit e delete usados no JS) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=task_alt,edit,delete" />
+    <!-- Google Material Symbols Outlined (família completa para evitar problemas com subset) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
     <div class="container">
@@ -18,10 +18,14 @@
           <span style="font-size: inherit; font-weight: 700;">TODO List</span>
         </h1>
         <form id="task-form">
-            <input type="text" id="title" placeholder="Título da tarefa" required>
-            <input type="text" id="description" placeholder="Descrição">
-            <input type="date" id="dueDate" placeholder="Data de vencimento">
-            <select id="status" required>
+            <label for="title" class="visually-hidden">Título da tarefa</label>
+            <input type="text" id="title" aria-label="Título da tarefa" placeholder="Título da tarefa" required>
+            <label for="description" class="visually-hidden">Descrição</label>
+            <input type="text" id="description" aria-label="Descrição" placeholder="Descrição">
+            <label for="dueDate" class="visually-hidden">Data de vencimento</label>
+            <input type="date" id="dueDate" aria-label="Data de vencimento" placeholder="Data de vencimento">
+            <label for="status" class="visually-hidden">Status</label>
+            <select id="status" aria-label="Status" required>
                 <option value="TODO">A Fazer</option>
                 <option value="DOING">Fazendo</option>
                 <option value="DONE">Feito</option>
