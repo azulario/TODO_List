@@ -1,11 +1,31 @@
-// JavaScript para TODO List
+// JavaScript para aplicação de lista de tarefas (To-Do List)
 // Todas as funções estão comentadas explicando sua finalidade
 
 // Array para armazenar as tarefas em memória
 let tasks = [];
 let editIndex = null; // Índice da tarefa em edição, se houver
+const storageKey = 'todo.Tasks.v1'; // Chave para armazenamento local (localStorage)
 
-// Função para renderizar as tarefas nas três colunas
+// Função para carregar tarefas do localStorage
+function loadTasks() {
+    const storedTasks = localStorage.getItem(storageKey); // procura dados salvos
+
+    if (storedTasks) {
+        tasks = JSON.parse(storedTasks); // converte de volta para array
+    } else {
+        tasks = []; //se nao tem nada salvo, começa com array vazio
+    }
+}
+
+// nova função para salvar tarefas no localStorage
+// salva todas as tarefas no navegador
+// JSON.stringify converte o array em texto para pode salvar
+// localStorage.setItem salva o texto com a chave definida
+function saveTasks() {
+    localStorage.setItem(storageKey, JSON.stringify(tasks)); // converte array em texto e salva
+}
+
+
 function renderTasks() {
   const todoList = document.getElementById('todo-list');
   const doingList = document.getElementById('doing-list');
@@ -41,6 +61,7 @@ function renderTasks() {
       if (select) {
         select.addEventListener('change', function(e) {
           tasks[idx].status = e.target.value;
+          saveTasks(); // Salva as mudanças no localStorage
           renderTasks();
         });
       }
@@ -70,6 +91,7 @@ function handleFormSubmit(event) {
     tasks.push(task);
   }
   document.getElementById('task-form').reset();
+  saveTasks(); // Salva as mudanças no localStorage
   renderTasks();
 }
 
@@ -88,12 +110,14 @@ function editTask(idx) {
 function deleteTask(idx) {
   if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
     tasks.splice(idx, 1);
+    saveTasks(); // Salva as mudanças no localStorage
     renderTasks();
   }
 }
 
 // Inicialização dos listeners
 window.onload = function() {
+    loadTasks(); // Carrega tarefas do localStorage ao iniciar
   document.getElementById('task-form').addEventListener('submit', handleFormSubmit);
   renderTasks();
 };
