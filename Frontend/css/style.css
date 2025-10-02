@@ -35,6 +35,11 @@ h1 {
     font-size: 1.4rem;
   }
 }
+/* Regras base para Material Symbols - deixa os ícones em negrito */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+}
+
 @media (prefers-color-scheme: dark) {
   body, .task-info span, .task-info small {
     color: #f5f6fa !important;
@@ -169,10 +174,10 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
   display: flex;
   flex-direction: row;
   gap: 2.5rem;
-  justify-content: space-between;
+  justify-content: flex-start; /* evita esticar com space-between, usa apenas gap */
   margin-top: 2rem;
   width: 100%;
-  align-items: flex-start;
+  align-items: stretch; /* colunas alinhadas na horizontal por altura */
 }
 @media (max-width: 900px) {
   .columns {
@@ -342,21 +347,31 @@ li.DONE {
 }
 .task-actions button {
   background: none;
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
   font-size: 1.25rem;
   color: #8875FF;
-  font-weight: bold;
-  transition: color 0.18s;
+  font-weight: 700;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+  width: 36px; height: 36px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+}
+.task-actions .material-symbols-outlined {
+  font-size: 22px; line-height: 1;
 }
 .task-actions button:hover {
   color: #6c5ce7;
+  background: rgba(136, 117, 255, 0.08);
+  border-color: rgba(136, 117, 255, 0.3);
 }
 .task-actions button.delete {
   color: #dc3545;
 }
 .task-actions button.delete:hover {
   color: #a71d2a;
+  background: rgba(220, 53, 69, 0.08);
+  border-color: rgba(220, 53, 69, 0.3);
 }
 @media (max-width: 900px) {
   .task-actions {
