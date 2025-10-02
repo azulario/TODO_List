@@ -31,8 +31,8 @@ function renderTasks() {
         </div>
       </div>
       <div class="task-actions">
-        <button onclick="editTask(${idx})" title="Editar"><i class="bi bi-pencil-square"></i></button>
-        <button onclick="deleteTask(${idx})" class="delete" title="Excluir"><i class="bi bi-trash"></i></button>
+        <button onclick="editTask(${idx})" title="Editar"><span class="material-symbols-outlined" style="font-variation-settings: 'wght' 700;">edit</span></button>
+        <button onclick="deleteTask(${idx})" class="delete" title="Excluir"><span class="material-symbols-outlined" style="font-variation-settings: 'wght' 700;">delete</span></button>
       </div>
     `;
     // Adiciona listener para mudança de status
