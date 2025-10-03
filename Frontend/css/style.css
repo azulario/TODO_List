@@ -24,6 +24,7 @@ body {
   background: #f5f6fa;
   font-family: "SF Pro Display", "Inter", Arial, sans-serif;
   color: #222;
+  min-height: 100dvh; /* evita encolher no mobile*/
 }
 
 h1 {
@@ -130,6 +131,7 @@ h1 {
   border-radius: 18px;
   box-shadow: 0 8px 32px 0 rgba(60, 60, 60, 0.1), 0 1.5px 4px 0 rgba(60, 60, 60, 0.06);
   padding: 2.5rem 2rem 2rem 2rem;
+  min-height: 100%;
 }
 
 form {
@@ -211,6 +213,8 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
 }
 @media (max-width: 900px) {
   .column {
+    gap: 1.2rem;
+    flex: 0 0 auto;
     max-width: 100% !important;
     min-width: 0 !important;
     width: 100% !important;
