@@ -266,8 +266,8 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
 
 /* estilos do controle de status da coluna */
 .column-status-control {
-  background: #fff3cd;
-  border: 2px solid #ffc107;
+  background: #8875FF;
+  border: none;
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 15px;
@@ -319,7 +319,7 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
 
 /* 🆕 NOVO: Destaque visual quando tarefa está selecionada */
 .task-list li.selected {
-  border: 2px solid #ffc107;
+  border: none;
   background: #fffbf0;
 }
 
