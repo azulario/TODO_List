@@ -38,6 +38,19 @@
                   <span class="material-icons">list_alt</span>
                   <span class="column-label">A Fazer</span>
                 </div>
+
+                <!--Controle de status da coluna (inicialmente escondido) -->
+                <div class="column-status-control hidden" id="control-TODO">
+                    <label>Mover para:</label>
+                    <select id="status-select-TODO">
+                        <option value="">Selecione...</option>
+                        <option value="TODO">A Fazer</option>
+                        <option value="DOING">Fazendo</option>
+                        <option value="DONE">Feito</option>
+                    </select>
+                    <button onclick="applyColumnStatusChange('TODO')">Aplicar</button>
+                </div>
+
                 <ul id="todo-list" class="task-list"></ul>
             </div>
             <div class="column">
@@ -45,6 +58,19 @@
                   <span class="material-icons">hourglass_empty</span>
                   <span class="column-label">Fazendo</span>
                 </div>
+
+                <!--Controle de status da coluna (inicialmente escondido) -->
+                <div class="column-status-control hidden" id="control-DOING">
+                    <label>Mover para:</label>
+                    <select id="status-select-DOING">
+                        <option value="">Selecione...</option>
+                        <option value="TODO">A Fazer</option>
+                        <option value="DOING">Fazendo</option>
+                        <option value="DONE">Feito</option>
+                    </select>
+                    <button onclick="applyColumnStatusChange('DOING')">Aplicar</button>
+                </div>
+
                 <ul id="doing-list" class="task-list"></ul>
             </div>
             <div class="column">
@@ -52,6 +78,19 @@
                   <span class="material-icons">check_circle</span>
                   <span class="column-label">Feito</span>
                 </div>
+
+                <!-- 🆕 NOVO: Controle de status da coluna (inicialmente escondido) -->
+                <div class="column-status-control hidden" id="control-DONE">
+                    <label>Mover para:</label>
+                    <select id="status-select-DONE">
+                        <option value="">Selecione...</option>
+                        <option value="TODO">A Fazer</option>
+                        <option value="DOING">Fazendo</option>
+                        <option value="DONE">Feito</option>
+                    </select>
+                    <button onclick="applyColumnStatusChange('DONE')">Aplicar</button>
+                </div>
+
                 <ul id="done-list" class="task-list"></ul>
             </div>
         </div>
