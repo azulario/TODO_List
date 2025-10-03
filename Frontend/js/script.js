@@ -11,7 +11,12 @@ function loadTasks() {
     const storedTasks = localStorage.getItem(storageKey); // procura dados salvos
 
     if (storedTasks) {
-        tasks = JSON.parse(storedTasks); // converte de volta para array
+        try {
+            tasks = JSON.parse(storedTasks) || [];
+        } catch (e) {
+            // Se houver erro de parse, zera a lista para evitar quebra
+            tasks = [];
+        }
     } else {
         tasks = []; //se nao tem nada salvo, começa com array vazio
     }
@@ -31,6 +36,8 @@ function renderTasks() {
   const doingList = document.getElementById('doing-list');
   const doneList = document.getElementById('done-list');
 
+  if (!todoList || !doingList || !doneList) return;
+
   todoList.innerHTML = '';
   doingList.innerHTML = '';
   doneList.innerHTML = '';
@@ -43,7 +50,7 @@ function renderTasks() {
       <div class="task-info">
         <strong>${task.title}</strong>
         <span>${task.description || ''}</span>
-        <small> ${task.dueDate || '-'}</small>
+        <small>${task.dueDate || '-'}</small>
       </div>
       <div class="task-actions">
         <button onclick="editTask(${idx})" title="Editar"><span class="material-symbols-outlined" style="font-variation-settings: 'wght' 700;">edit</span></button>
@@ -56,73 +63,68 @@ function renderTasks() {
     else if (task.status === 'DONE') doneList.appendChild(li);
   });
 
-    // atualiza a visibilidade dos controles de cada coluna
-    updateColumnControls();
+  // atualiza a visibilidade dos controles de cada coluna
+  updateColumnControls();
 }
 
 function updateColumnControls() {
-    const columns = ['TODO', 'DOING', 'DONE'];
-    // pega todos os checkboxes marcados nessa coluna especifica
-    columns.forEach(status => {
-        const listId = column === 'TODO' ? 'todo-list' :
-            column === 'DOING' ? 'doing-list' : 'done-list';
+  const statuses = ['TODO', 'DOING', 'DONE'];
+  statuses.forEach((status) => {
+    const listId = status === 'TODO' ? 'todo-list' : status === 'DOING' ? 'doing-list' : 'done-list';
+    const list = document.getElementById(listId);
+    const control = document.getElementById(`control-${status}`);
+    if (!list || !control) return;
 
-        const list = document.getElementById(listId);
-        const checkInColumn = list.querySelectorAll('.task-checkbox:checked');
+    const checked = list.querySelectorAll('.task-checkbox:checked');
 
-        // pega o controle dessa coluna
-        const control = document.getElementById(`control-${column}`);
+    // Limpa estado visual
+    list.querySelectorAll('li').forEach((li) => li.classList.remove('selected'));
 
-        if (checkInColumn.length > 0) {
-            control.classList.add('hidden');
-
-            checkInColumn.forEach(check => {
-                check.closest('li').classList.add('selected');
-            });
-        } else {
-            control.classList.remove('hidden');
-
-            const allInColumn = list.querySelectorAll('li');
-            allInColumn.forEach(li => li.classList.remove('selected'));
-        }
-    });
+    if (checked.length > 0) {
+      control.classList.remove('hidden'); // mostra o controle quando há seleção
+      checked.forEach((cb) => {
+        const li = cb.closest('li');
+        if (li) li.classList.add('selected');
+      });
+    } else {
+      control.classList.add('hidden'); // esconde quando não há seleção
+    }
+  });
 }
 
 function applyColumnStatusChange(columnStatus) {
-    const newStatus = document.getElementById(`status-select-${columnStatus}`);
+  const selectEl = document.getElementById(`status-select-${columnStatus}`);
+  if (!selectEl || !selectEl.value) {
+    alert('Por favor, selecione um status!');
+    return;
+  }
 
-    if (!newStatus) {
-        alert('Por favor, selecione um status!');
-        return;
+  const newStatus = selectEl.value;
+  const listId = columnStatus === 'TODO' ? 'todo-list' : columnStatus === 'DOING' ? 'doing-list' : 'done-list';
+  const list = document.getElementById(listId);
+  if (!list) return;
+
+  const checkedBoxes = list.querySelectorAll('.task-checkbox:checked');
+  if (checkedBoxes.length === 0) {
+    alert('Nenhuma tarefa selecionada!');
+    return;
+  }
+
+  const confirmMsg = `Mover ${checkedBoxes.length} tarefa(s) para "${newStatus}"?`;
+  if (!confirm(confirmMsg)) return;
+
+  checkedBoxes.forEach((checkbox) => {
+    const idx = parseInt(checkbox.dataset.idx, 10);
+    if (!Number.isNaN(idx)) {
+      tasks[idx].status = newStatus;
     }
+  });
 
-    const listId = columnStatus === 'TODO' ? 'todo-list' :
-        columnStatus === 'DOING' ? 'doing-list' : 'done-list';
-    const list = document.getElementById(listId);
+  saveTasks();
+  renderTasks();
 
-    const checkedBoxes = list.querySelectorAll('.task-checkbox:checked');
-
-    if (checkedBoxes.length === 0) {
-        alert('Nenhuma tarefa selecionada!');
-        return;
-    }
-
-    const statusLabel = getStatusLabel(newStatus);
-    const confirmMsg = `Mover ${checkBoxes.length} tarefa(s) para "${statusLabel}"?)`;
-    if (!confirm(confirmMsg)) return;
-
-    checkedBoxes.forEach(checkbox => {
-        const idx = parseInt(checkbox.dataset.idx);
-        tasks[idx].status = newStatus;
-    });
-
-    saveTasks();
-    renderTasks();
-
-    document.getElementById(`status-select-${columnStatus}`).value = '';
-
-    alert('Tarefas movidas com sucesso!');
-
+  // reseta o select da coluna
+  selectEl.value = '';
 }
 
 // Função para adicionar ou atualizar uma tarefa
@@ -174,15 +176,22 @@ function deleteTask(idx) {
 
 // Inicialização dos listeners
 window.onload = function() {
-    loadTasks(); // Carrega tarefas do localStorage ao iniciar
+  loadTasks(); // Carrega tarefas do localStorage ao iniciar
 
-  document.getElementById('task-form').addEventListener('submit', handleFormSubmit);
-  renderTasks();
+  const form = document.getElementById('task-form');
+  if (form) {
+    form.addEventListener('submit', handleFormSubmit);
+  }
 
-  document.querySelector('.container').addEventListener('chage', function(event) {
-      if (event.target.classList.contains('task-checkbox')) {
-          updateColumnControls();
+  // Delegação de evento para mudanças nos checkboxes das tarefas
+  const container = document.querySelector('.container');
+  if (container) {
+    container.addEventListener('change', function(event) {
+      if (event.target && event.target.classList && event.target.classList.contains('task-checkbox')) {
+        updateColumnControls();
       }
-  });
+    });
+  }
+
   renderTasks();
 };

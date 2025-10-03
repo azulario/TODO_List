@@ -21,6 +21,10 @@
   white-space: nowrap !important;
 }
 
+.hidden {
+  display: none !important;
+}
+
 body {
   background: #f5f6fa;
   font-family: "SF Pro Display", "Inter", Arial, sans-serif;
@@ -52,6 +56,10 @@ h1 {
 }
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 24;
+}
+
+.material-icons {
+  color: #8875FF;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -99,6 +107,12 @@ h1 {
   }
   form input[type=date] {
     color-scheme: dark;
+  }
+  .column-status-control select {
+    background: #2d2f3a !important;
+    color: #f5f6fa !important;
+    border: 1px solid #444 !important;
+    box-shadow: none;
   }
   .column-label {
     color: #f5f6fa !important;
@@ -261,6 +275,29 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
   align-items: center;
   gap: 10px;
 }
+.column-status-control select {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.98rem;
+}
+.column-status-control button {
+  background: #8875FF;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 8px 0 rgba(136, 117, 255, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.column-status-control button:hover {
+  background: #6c5ce7;
+  box-shadow: 0 4px 16px 0 rgba(136, 117, 255, 0.12);
+}
 
 .columns > .column:nth-child(2) .column-label {
   color: #222;
@@ -295,7 +332,7 @@ form button:hover, form input[type=button]:hover, form input[type=submit]:hover 
   margin-top: 3px;
 }
 
-TODO, li.DOING, li.DONE {
+li.TODO, li.DOING, li.DONE {
   background: #fff;
   border-radius: 10px;
   margin-bottom: 1.2rem;
@@ -309,11 +346,11 @@ TODO, li.DOING, li.DONE {
   transition: box-shadow 0.18s;
   border-left: 5px solid #007aff;
 }
-TODO:hover, li.DOING:hover, li.DONE:hover {
+li.TODO:hover, li.DOING:hover, li.DONE:hover {
   box-shadow: 0 6px 24px 0 rgba(0, 122, 255, 0.13);
 }
 @media (max-width: 900px) {
-  TODO, li.DOING, li.DONE {
+  li.TODO, li.DOING, li.DONE {
     flex-direction: column;
     gap: 0.7rem;
     padding: 0.8rem 0.7rem 0.8rem 0.7rem;
