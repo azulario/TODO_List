@@ -38,9 +38,9 @@ function renderTasks() {
     li.className = task.status;
     li.innerHTML = `
       <div class="task-info">
-        <strong>${task.title}</strong><br>
-        <span>${task.description || ''}</span><br>
-        <small>Vencimento: ${task.dueDate || '-'}</small><br>
+        <strong>${task.title}</strong>
+        <span>${task.description || ''}</span>
+        <small> ${task.dueDate || '-'}</small>
         <div class="status-select">
           <label for="status-select-${idx}" style="font-size:0.9em;">Status:</label>
           <select id="status-select-${idx}" data-idx="${idx}">
