@@ -251,6 +251,18 @@ form {
   transition: color 0.2s;
 }
 
+/* estilos do controle de status da coluna */
+.column-status-control {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .columns > .column:nth-child(2) .column-label { color: #222; }
 .columns > .column:nth-child(3) .column-label { color: #222; }
 
@@ -262,7 +274,23 @@ form {
 
 #task-list { display: none; } // Esconde a lista antiga
 
-li.TODO, li.DOING, li.DONE {
+
+/* 🆕 NOVO: Destaque visual quando tarefa está selecionada */
+.task-list li.selected {
+  border: 2px solid #ffc107;
+  background: #fffbf0;
+}
+
+/* Estilos do checkbox de seleção */
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+TODO, li.DOING, li.DONE {
   background: #fff;
   border-radius: 10px;
   margin-bottom: 1.2rem;

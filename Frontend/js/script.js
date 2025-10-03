@@ -30,46 +30,99 @@ function renderTasks() {
   const todoList = document.getElementById('todo-list');
   const doingList = document.getElementById('doing-list');
   const doneList = document.getElementById('done-list');
+
   todoList.innerHTML = '';
   doingList.innerHTML = '';
   doneList.innerHTML = '';
+
   tasks.forEach((task, idx) => {
     const li = document.createElement('li');
     li.className = task.status;
     li.innerHTML = `
+      <input type="checkbox" class="task-checkbox" data-idx="${idx}">
       <div class="task-info">
         <strong>${task.title}</strong>
         <span>${task.description || ''}</span>
         <small> ${task.dueDate || '-'}</small>
-        <div class="status-select">
-          <label for="status-select-${idx}" style="font-size:0.9em;">Status:</label>
-          <select id="status-select-${idx}" data-idx="${idx}">
-            <option value="TODO" ${task.status === 'TODO' ? 'selected' : ''}>A Fazer</option>
-            <option value="DOING" ${task.status === 'DOING' ? 'selected' : ''}>Fazendo</option>
-            <option value="DONE" ${task.status === 'DONE' ? 'selected' : ''}>Feito</option>
-          </select>
-        </div>
       </div>
       <div class="task-actions">
         <button onclick="editTask(${idx})" title="Editar"><span class="material-symbols-outlined" style="font-variation-settings: 'wght' 700;">edit</span></button>
         <button onclick="deleteTask(${idx})" class="delete" title="Excluir"><span class="material-symbols-outlined" style="font-variation-settings: 'wght' 700;">delete</span></button>
       </div>
     `;
-    // Adiciona listener para mudança de status
-    setTimeout(() => {
-      const select = document.getElementById(`status-select-${idx}`);
-      if (select) {
-        select.addEventListener('change', function(e) {
-          tasks[idx].status = e.target.value;
-          saveTasks(); // Salva as mudanças no localStorage
-          renderTasks();
-        });
-      }
-    }, 0);
+
     if (task.status === 'TODO') todoList.appendChild(li);
     else if (task.status === 'DOING') doingList.appendChild(li);
     else if (task.status === 'DONE') doneList.appendChild(li);
   });
+
+    // atualiza a visibilidade dos controles de cada coluna
+    updateColumnControls();
+}
+
+function updateColumnControls() {
+    const columns = ['TODO', 'DOING', 'DONE'];
+    // pega todos os checkboxes marcados nessa coluna especifica
+    columns.forEach(status => {
+        const listId = column === 'TODO' ? 'todo-list' :
+            column === 'DOING' ? 'doing-list' : 'done-list';
+
+        const list = document.getElementById(listId);
+        const checkInColumn = list.querySelectorAll('.task-checkbox:checked');
+
+        // pega o controle dessa coluna
+        const control = document.getElementById(`control-${column}`);
+
+        if (checkInColumn.length > 0) {
+            control.classList.add('hidden');
+
+            checkInColumn.forEach(check => {
+                check.closest('li').classList.add('selected');
+            });
+        } else {
+            control.classList.remove('hidden');
+
+            const allInColumn = list.querySelectorAll('li');
+            allInColumn.forEach(li => li.classList.remove('selected'));
+        }
+    });
+}
+
+function applyColumnStatusChange(columnStatus) {
+    const newStatus = document.getElementById(`status-select-${columnStatus}`);
+
+    if (!newStatus) {
+        alert('Por favor, selecione um status!');
+        return;
+    }
+
+    const listId = columnStatus === 'TODO' ? 'todo-list' :
+        columnStatus === 'DOING' ? 'doing-list' : 'done-list';
+    const list = document.getElementById(listId);
+
+    const checkedBoxes = list.querySelectorAll('.task-checkbox:checked');
+
+    if (checkedBoxes.length === 0) {
+        alert('Nenhuma tarefa selecionada!');
+        return;
+    }
+
+    const statusLabel = getStatusLabel(newStatus);
+    const confirmMsg = `Mover ${checkBoxes.length} tarefa(s) para "${statusLabel}"?)`;
+    if (!confirm(confirmMsg)) return;
+
+    checkedBoxes.forEach(checkbox => {
+        const idx = parseInt(checkbox.dataset.idx);
+        tasks[idx].status = newStatus;
+    });
+
+    saveTasks();
+    renderTasks();
+
+    document.getElementById(`status-select-${columnStatus}`).value = '';
+
+    alert('Tarefas movidas com sucesso!');
+
 }
 
 // Função para adicionar ou atualizar uma tarefa
@@ -79,8 +132,11 @@ function handleFormSubmit(event) {
   const description = document.getElementById('description').value.trim();
   const dueDate = document.getElementById('dueDate').value;
   const status = document.getElementById('status').value;
+
   if (!title) return;
+
   const task = { title, description, dueDate, status };
+
   if (editIndex !== null) {
     // Atualiza tarefa existente
     tasks[editIndex] = task;
@@ -90,6 +146,7 @@ function handleFormSubmit(event) {
     // Adiciona nova tarefa
     tasks.push(task);
   }
+
   document.getElementById('task-form').reset();
   saveTasks(); // Salva as mudanças no localStorage
   renderTasks();
@@ -118,6 +175,14 @@ function deleteTask(idx) {
 // Inicialização dos listeners
 window.onload = function() {
     loadTasks(); // Carrega tarefas do localStorage ao iniciar
+
   document.getElementById('task-form').addEventListener('submit', handleFormSubmit);
+  renderTasks();
+
+  document.querySelector('.container').addEventListener('chage', function(event) {
+      if (event.target.classList.contains('task-checkbox')) {
+          updateColumnControls();
+      }
+  });
   renderTasks();
 };
