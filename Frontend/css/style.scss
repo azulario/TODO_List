@@ -265,7 +265,8 @@ form {
 
 /* estilos do controle de status da coluna */
 .column-status-control {
-  background: $primary;
+  background: rgba(132, 171, 184, 0.18);
+  box-shadow: 0 2px 8px 0 rgba(60,60,60,0.04);
   border: none;
   border-radius: 8px;
   padding: 12px;
@@ -309,7 +310,7 @@ form {
 #task-list { display: none; } // Esconde a lista antiga
 
 
-/* 🆕 NOVO: Destaque visual quando tarefa está selecionada */
+/* destaque visual quando tarefa está selecionada */
 .task-list li.selected {
   border: none;
   background: #fffbf0;
